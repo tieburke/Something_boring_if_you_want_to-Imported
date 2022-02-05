@@ -23,7 +23,7 @@ public class TankDrive extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
     addRequirements(drivetrain);
-
+    
     this.forward = forward;
     this.rotation = rotation;
     this.invert = invert;

@@ -4,8 +4,8 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -17,7 +17,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   private final CANSparkMax frontLeft, frontRight, backLeft, backRight;
-  private final SpeedControllerGroup left, right;
+  MotorControllerGroup left;
+private final MotorControllerGroup right;
 	private final DifferentialDrive drive;
 
 
@@ -37,8 +38,8 @@ public class Drivetrain extends SubsystemBase {
 		backLeft.setIdleMode(IdleMode.kBrake);
 		backRight.setIdleMode(IdleMode.kBrake);
     
-    left = new SpeedControllerGroup(frontLeft, backLeft);
-		right = new SpeedControllerGroup(frontRight, backRight);
+    left = new MotorControllerGroup(frontLeft, backLeft);
+		right = new MotorControllerGroup(frontRight, backRight);
 
 		drive = new DifferentialDrive(left, right);
 

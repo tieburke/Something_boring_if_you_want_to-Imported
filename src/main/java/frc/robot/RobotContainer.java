@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.TankDrive;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.util.Limelight;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,12 +24,14 @@ public class RobotContainer {
   private final Joystick stick;
   private final XboxController xbox;
   private final Drivetrain drivetrain;
+  private final Limelight limelight;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     stick = new Joystick(0);
     xbox = new XboxController(1);
     drivetrain = new Drivetrain();
+    limelight = new Limelight();
     // Configure the button bindings
     configureButtonBindings();
 
