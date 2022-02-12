@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
 public class AutoTurn extends CommandBase {
-/*
+
     private final Drivetrain drivetrain;
 
     private double power, angle, startAngle;
@@ -43,5 +43,4 @@ public class AutoTurn extends CommandBase {
         }
         return false;
     }
-*/
 }

@@ -29,8 +29,8 @@ public class Drivetrain extends SubsystemBase {
 	private RelativeEncoder leftEncoder;
 	private RelativeEncoder rightEncoder;
 
-
-
+	double gyroOffset = 0;
+	
   public Drivetrain() {
     frontLeft = new CANSparkMax(Constants.FL_DRIVE_PORT, MotorType.kBrushless);
 	frontRight = new CANSparkMax(Constants.FR_DRIVE_PORT, MotorType.kBrushless);
@@ -92,6 +92,14 @@ public class Drivetrain extends SubsystemBase {
 
 	public double getEncoderAverage() {
 		return (getEncoderLeft() + -getEncoderRight()) / 2;
+	}
+
+	public double getAngle() {
+		return ahrs.getAngle() - gyroOffset;
+	}
+	
+	public void resetAngle() {
+		gyroOffset = ahrs.getAngle();
 	}
 
 //This is a test ignore this
