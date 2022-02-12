@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.TankDrive;
@@ -25,6 +26,7 @@ public class RobotContainer {
   private final XboxController xbox;
   private final Drivetrain drivetrain;
   private final Limelight limelight;
+  private SendableChooser<Command> chooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -77,6 +79,16 @@ public class RobotContainer {
     x9 = new JoystickButton(xbox, 9);
     x10 = new JoystickButton(xbox, 10);
     
+
+  }
+
+
+  public void initializeAutoChooser() {
+    chooser.setDefaultOption(
+			"Nothing",
+			null
+		);
+
 
   }
 

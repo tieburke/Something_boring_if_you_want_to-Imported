@@ -16,8 +16,12 @@ public final class Constants {
 
     public static final int FL_DRIVE_PORT = 1,
                             FR_DRIVE_PORT = 2,
-                            BL_DRIVE_PORT = 3,
-                            BR_DRIVE_PORT = 4;
+                            ML_DRIVE_PORT = 3,
+                            MR_DRIVE_PORT = 4,
+                            BL_DRIVE_PORT = 5,
+                            BR_DRIVE_PORT = 6;
+                            
+                            
                             
 
 
