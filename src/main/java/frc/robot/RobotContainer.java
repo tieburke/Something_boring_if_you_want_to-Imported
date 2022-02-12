@@ -9,10 +9,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.TankDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.util.Limelight;
+import frc.robot.commands.autocommands.AutoDrive;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -84,11 +86,15 @@ public class RobotContainer {
 
 
   public void initializeAutoChooser() {
-    chooser.setDefaultOption(
-			"Nothing",
-			null
-		);
+    
+      chooser.setDefaultOption(
+		  	"Nothing",
+		  	null
+		  );
 
+      chooser.addOption("DriveOutTarmac",
+      new AutoDrive(0.5, 12, drivetrain)
+      );
 
   }
 
@@ -98,7 +104,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
+    return chooser.getSelected();
     // An ExampleCommand will run in autonomous
   }
 }
