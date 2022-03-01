@@ -15,12 +15,12 @@ public class AutoTurn extends CommandBase {
 
         this.angle = angle;
         this.power = power;
-        startAngle = drivetrain.getAngle();
+        //startAngle = drivetrain.getAngle();
     }
 
     @Override
     public void initialize() {
-        startAngle = drivetrain.getAngle();
+        //startAngle = drivetrain.getAngle();
     }
 
     @Override
@@ -35,12 +35,12 @@ public class AutoTurn extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if(drivetrain.getAngle() >= angle && power > 0) {
-            return true;
-        }
-        if(drivetrain.getAngle() <= angle && power < 0) {
-            return true;
-        }
+        //if(drivetrain.getAngle() >= angle && power > 0) {
+            //return true;
+        //}
+        //if(drivetrain.getAngle() <= angle && power < 0) {
+          //  return true;
+        //}
         return false;
     }
 }

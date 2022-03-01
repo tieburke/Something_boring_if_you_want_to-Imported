@@ -8,9 +8,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.SwitchGears;
 import frc.robot.commands.TankDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.util.Limelight;
@@ -39,11 +43,12 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+  //  initializeAutoChooser();
     setDefaultCommands();
   }
 
   private void setDefaultCommands(){
-	  drivetrain.setDefaultCommand(new TankDrive(() -> stick.getY(), () -> stick.getX(), () -> stick.getRawButtonPressed(1), drivetrain));
+	  drivetrain.setDefaultCommand(new TankDrive(() -> filter(stick.getY()), () -> filter(stick.getTwist()), () -> stick.getRawButtonPressed(2), drivetrain, stick.getTrigger(), stick.getRawButton(2)));
   }
 
   /**
@@ -82,21 +87,36 @@ public class RobotContainer {
     x10 = new JoystickButton(xbox, 10);
     
 
+    //j2.whenPressed(new SwitchGears(drivetrain));
+    j2.whenPressed(new InstantCommand(drivetrain::switchGears, drivetrain));
+
   }
 
-
-  public void initializeAutoChooser() {
+  public double filter(double value) {
+    if(Math.abs(value) < .05) {
+      value = 0;
+    }
+    return value;
     
-      chooser.setDefaultOption(
-		  	"Nothing",
-		  	null
-		  );
-
-      chooser.addOption("DriveOutTarmac",
-      new AutoDrive(0.5, 12, drivetrain)
-      );
-
   }
+
+
+
+
+  // public void initializeAutoChooser() {
+    
+  //     chooser.setDefaultOption(
+	// 	  	"nothing",
+  //       new WaitCommand(10)
+	// 	  );
+
+  //     chooser.addOption("DriveOutTarmac",
+  //     new AutoDrive(0.5, 12, drivetrain)
+  //     );
+
+  //     SmartDashboard.putData(chooser);
+
+  // }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -104,7 +124,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return chooser.getSelected();
+    return new AutoDrive(.4, 40, drivetrain);
     // An ExampleCommand will run in autonomous
   }
 }

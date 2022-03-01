@@ -12,14 +12,16 @@ import frc.robot.subsystems.Drivetrain;
 
 
 public class TankDrive extends CommandBase {
-  /** Creates a new TankDrive. */
+  /**  Creates a new TankDrive. */
   Drivetrain drivetrain;
   DoubleSupplier forward, rotation;
   BooleanSupplier invert;
+  Boolean shift1, shift2;
 
   private int direction = 1;
 
-  public TankDrive(DoubleSupplier forward, DoubleSupplier rotation, BooleanSupplier invert, Drivetrain drivetrain) {
+  public TankDrive(DoubleSupplier forward, DoubleSupplier rotation, BooleanSupplier invert, 
+                  Drivetrain drivetrain, boolean shift1, boolean shift2) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
     addRequirements(drivetrain);
@@ -28,6 +30,8 @@ public class TankDrive extends CommandBase {
     this.rotation = rotation;
     this.invert = invert;
     this.drivetrain = drivetrain;
+    this.shift1 = shift1;
+    this.shift2 = shift2;
   }
 
   // Called when the command is initially scheduled.
@@ -44,6 +48,13 @@ public class TankDrive extends CommandBase {
 
 
     drivetrain.arcadeDrive(speed, rotate, false);
+
+    if (shift1){
+      drivetrain.setGearShift(true);
+    }
+    if (shift2){
+      drivetrain.setGearShift(false);
+    }
 
   }
 

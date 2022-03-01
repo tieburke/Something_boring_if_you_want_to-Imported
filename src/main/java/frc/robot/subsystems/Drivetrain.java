@@ -9,7 +9,10 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-import com.kauailabs.navx.frc.AHRS;
+//import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SPI;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax;
@@ -22,9 +25,11 @@ public class Drivetrain extends SubsystemBase {
 
 	private final MotorControllerGroup right, left;
 
+	private final DoubleSolenoid gearShift;
+
 	private final DifferentialDrive drive;
 
-	private final AHRS ahrs;
+	//private final AHRS ahrs;
 	private RelativeEncoder leftEncoder;
 	private RelativeEncoder rightEncoder;
 
@@ -33,10 +38,11 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain() {
     frontLeft = new CANSparkMax(Constants.FL_DRIVE_PORT, MotorType.kBrushless);
 	frontRight = new CANSparkMax(Constants.FR_DRIVE_PORT, MotorType.kBrushless);
-	midLeft = new CANSparkMax(Constants.MR_DRIVE_PORT, MotorType.kBrushless);
-    midRight = new CANSparkMax(Constants.ML_DRIVE_PORT, MotorType.kBrushless);
-	backLeft = new CANSparkMax(Constants.BR_DRIVE_PORT, MotorType.kBrushless);
+	midLeft = new CANSparkMax(Constants.ML_DRIVE_PORT, MotorType.kBrushless);
+    midRight = new CANSparkMax(Constants.MR_DRIVE_PORT, MotorType.kBrushless);
+	backLeft = new CANSparkMax(Constants.BL_DRIVE_PORT, MotorType.kBrushless);
 	backRight = new CANSparkMax(Constants.BR_DRIVE_PORT, MotorType.kBrushless);
+	gearShift = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);  
 
     	frontLeft.restoreFactoryDefaults();
 		frontRight.restoreFactoryDefaults();
@@ -54,15 +60,17 @@ public class Drivetrain extends SubsystemBase {
     
     	left = new MotorControllerGroup(frontLeft, midLeft, backLeft);
 		right = new MotorControllerGroup(frontRight, midRight, backRight);
-
+		
 		drive = new DifferentialDrive(left, right);
 
-		ahrs = new AHRS(SPI.Port.kMXP);
+		// ahrs = new AHRS(SPI.Port.kMXP);
 
 		resetEncoders();
 
 		leftEncoder = frontLeft.getEncoder();
 		rightEncoder = frontRight.getEncoder();
+
+		gearShift.set(DoubleSolenoid.Value.kReverse);
 
   }
 
@@ -93,12 +101,24 @@ public class Drivetrain extends SubsystemBase {
 		return (getEncoderLeft() + -getEncoderRight()) / 2;
 	}
 
-	public double getAngle() {
-		return ahrs.getAngle() - gyroOffset;
-	}
+	// public double getAngle() {
+		// return ahrs.getAngle() - gyroOffset;
+	// }
 	
-	public void resetAngle() {
-		gyroOffset = ahrs.getAngle();
+	// public void resetAngle() {
+		// gyroOffset = ahrs.getAngle();
+	// }
+	public void setGearShift(boolean shift){
+		if (shift){
+		gearShift.set(DoubleSolenoid.Value.kForward);
+		}
+		else{
+			gearShift.set(DoubleSolenoid.Value.kReverse);
+		}
+	}
+
+	public void switchGears(){
+		gearShift.toggle();
 	}
 
 //This is a test ignore this
