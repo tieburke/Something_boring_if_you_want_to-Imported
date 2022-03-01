@@ -25,7 +25,6 @@ public class Drivetrain extends SubsystemBase {
 	private final DifferentialDrive drive;
 
 	private final AHRS ahrs;
-
 	private RelativeEncoder leftEncoder;
 	private RelativeEncoder rightEncoder;
 
