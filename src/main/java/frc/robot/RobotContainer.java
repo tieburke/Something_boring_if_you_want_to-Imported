@@ -48,7 +48,7 @@ public class RobotContainer {
   }
 
   private void setDefaultCommands(){
-	  drivetrain.setDefaultCommand(new TankDrive(() -> filter(stick.getY()), () -> filter(stick.getTwist()), () -> stick.getRawButtonPressed(2), drivetrain, stick.getTrigger(), stick.getRawButton(2)));
+	  drivetrain.setDefaultCommand(new TankDrive(() -> filter(stick.getTwist()), () -> filter(stick.getY()), () -> stick.getRawButtonPressed(2), drivetrain, stick.getTrigger(), stick.getRawButton(2)));
   }
 
   /**
