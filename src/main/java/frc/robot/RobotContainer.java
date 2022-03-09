@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,10 +15,22 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.IntakeGoSpin;
+import frc.robot.commands.PixyFindBall;
+import frc.robot.commands.SetShooterVelocity;
 import frc.robot.commands.SwitchGears;
 import frc.robot.commands.TankDrive;
+import frc.robot.commands.TransportGoBrr;
+import frc.robot.commands.WhateverYouWant;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Transport;
 import frc.robot.util.Limelight;
+import frc.robot.util.Pixy2;
+import frc.robot.util.Pixy2Obj;
+import frc.robot.util.SPILink;
 import frc.robot.commands.autocommands.AutoDrive;
 
 /**
@@ -31,15 +44,27 @@ public class RobotContainer {
   private final Joystick stick;
   private final XboxController xbox;
   private final Drivetrain drivetrain;
+  private final Shooter shooter;
+  private final Climber climber;
   private final Limelight limelight;
+  private final Transport transport;
+  private final Intake intake;
+  private final Pixy2Obj pixy;
   private SendableChooser<Command> chooser;
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     stick = new Joystick(0);
     xbox = new XboxController(1);
     drivetrain = new Drivetrain();
+    shooter = new Shooter();
+    climber = new Climber();
     limelight = new Limelight();
+    pixy = new Pixy2Obj();
+    transport = new Transport();
+    intake = new Intake();
+
     // Configure the button bindings
     configureButtonBindings();
 
@@ -47,8 +72,9 @@ public class RobotContainer {
     setDefaultCommands();
   }
 
+
   private void setDefaultCommands(){
-	  drivetrain.setDefaultCommand(new TankDrive(() -> filter(stick.getTwist()), () -> filter(stick.getY()), () -> stick.getRawButtonPressed(2), drivetrain, stick.getTrigger(), stick.getRawButton(2)));
+	  drivetrain.setDefaultCommand(new TankDrive(() -> filter(stick.getY()*0.5), () -> filter(stick.getTwist()*0.5), () -> stick.getRawButtonPressed(2), drivetrain, stick.getTrigger(), stick.getRawButton(2)));
   }
 
   /**
@@ -90,10 +116,16 @@ public class RobotContainer {
     //j2.whenPressed(new SwitchGears(drivetrain));
     j2.whenPressed(new InstantCommand(drivetrain::switchGears, drivetrain));
 
+    xMenu.whenPressed(new WhateverYouWant(drivetrain, pixy));
+    xA.whenPressed(new InstantCommand(climber::climberValve, climber));
+    xB.whenHeld(new SetShooterVelocity(shooter));
+    xX.whenHeld(new TransportGoBrr(transport));
+    xY.whenHeld(new IntakeGoSpin(intake));
+
   }
 
   public double filter(double value) {
-    if(Math.abs(value) < .05) {
+    if(Math.abs(value) < .1) {
       value = 0;
     }
     return value;
@@ -103,20 +135,20 @@ public class RobotContainer {
 
 
 
-  // public void initializeAutoChooser() {
+  public void initializeAutoChooser() {
     
-  //     chooser.setDefaultOption(
-	// 	  	"nothing",
-  //       new WaitCommand(10)
-	// 	  );
+      chooser.setDefaultOption(
+		  	"nothing",
+        new WaitCommand(10)
+		  );
 
-  //     chooser.addOption("DriveOutTarmac",
-  //     new AutoDrive(0.5, 12, drivetrain)
-  //     );
+      chooser.addOption("DriveOutTarmac",
+      new AutoDrive(0.5, 12, drivetrain)
+      );
 
-  //     SmartDashboard.putData(chooser);
+      SmartDashboard.putData(chooser);
 
-  // }
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -124,7 +156,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new AutoDrive(.4, 40, drivetrain);
+    return chooser.getSelected();
     // An ExampleCommand will run in autonomous
   }
 }

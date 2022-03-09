@@ -5,18 +5,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Transport;
 
-public class SwitchGears extends CommandBase {
-  /** Creates a new SwitchGears. */
+public class TransportGoBrr extends CommandBase {
 
-  private final Drivetrain drivetrain;
+private final Transport transport;
 
 
-  public SwitchGears(Drivetrain drivetrain) {
+  /** Creates a new SetShooterVelocity. */
+  public TransportGoBrr(Transport transport) {
+
+    this.transport = transport;
+    addRequirements(transport);
     // Use addRequirements() here to declare subsystem dependencies.
-    this.drivetrain = drivetrain;
-    addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
@@ -26,13 +28,15 @@ public class SwitchGears extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.switchGears();
+    transport.setPinkTransport(1);
+    transport.setTopTransport(1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
+    transport.setPinkTransport(0);
+    transport.setTopTransport(0);
   }
 
   // Returns true when the command should end.

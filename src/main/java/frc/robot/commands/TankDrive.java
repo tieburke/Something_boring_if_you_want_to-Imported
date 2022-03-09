@@ -47,7 +47,7 @@ public class TankDrive extends CommandBase {
     double rotate = rotation.getAsDouble();
 
 
-    drivetrain.arcadeDrive(speed, rotate, false);
+    drivetrain.arcadeDrive(rotate, speed, false);
 
     if (shift1){
       drivetrain.setGearShift(true);

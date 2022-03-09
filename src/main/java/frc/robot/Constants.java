@@ -14,11 +14,24 @@ package frc.robot;
  */
 public final class Constants {
 
+    //CAN IDs
     public static final int FL_DRIVE_PORT = 1,
                             FR_DRIVE_PORT = 2,
                             ML_DRIVE_PORT = 3,
                             MR_DRIVE_PORT = 4,
                             BL_DRIVE_PORT = 5,
                             BR_DRIVE_PORT = 6,
-                            INTAKE_MOTOR_PORT = 7;                           
+                            INTAKE_MOTOR_PORT = 7,
+                            PINK_TRANSPORT = 8,
+                            TOP_TRANSPORT = 9,
+                            SHOOTER_PORT = 10,
+                            TURRET_MOTOR = 11;
+
+    //Servo Ports
+    public static final int SHOOTER_SERVO = 0;  
+    
+    public static final double kShooterP = 0.00008,
+                               kShooterI = 0.0000001,
+                               kShooterF = 0.000175;
+
 }

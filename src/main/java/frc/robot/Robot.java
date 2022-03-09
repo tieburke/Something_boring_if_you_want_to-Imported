@@ -7,8 +7,11 @@ package frc.robot;
 //this is a change
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.util.Limelight;
+import frc.robot.util.Pixy2Obj;
 //this is also a change
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -20,6 +23,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private Pixy2Obj pixy;
+  private Limelight limelight;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -29,10 +34,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+    pixy = new Pixy2Obj();
+    limelight = new Limelight();
     m_robotContainer = new RobotContainer();
   }
 
   /**
+   * 
    * This function is called every robot packet, no matter the mode. Use this for items like
    * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
    *
@@ -83,7 +91,19 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    SmartDashboard.putNumber("pixyX", pixy.getPixyX());
+    SmartDashboard.putNumber("pixyY", pixy.getPixyY());
+    pixy.updateValues();
+
+    SmartDashboard.putBoolean("Valid Target", limelight.getValidTarget());
+    SmartDashboard.putNumber("limelight pipieline", limelight.getPipeline());
+
+    SmartDashboard.putNumber("limelightX", limelight.getX());
+    SmartDashboard.putNumber("limelightY", limelight.getY());
+    
+
+  }
 
   @Override
   public void testInit() {
