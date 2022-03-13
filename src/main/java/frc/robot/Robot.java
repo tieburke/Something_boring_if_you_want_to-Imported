@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Intake;
 import frc.robot.util.Limelight;
 import frc.robot.util.Pixy2Obj;
 //this is also a change
@@ -25,6 +26,7 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   private Pixy2Obj pixy;
   private Limelight limelight;
+  private Intake intake;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -37,6 +39,7 @@ public class Robot extends TimedRobot {
     pixy = new Pixy2Obj();
     limelight = new Limelight();
     m_robotContainer = new RobotContainer();
+    intake = new Intake();
   }
 
   /**
@@ -101,6 +104,8 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("limelightX", limelight.getX());
     SmartDashboard.putNumber("limelightY", limelight.getY());
+
+    SmartDashboard.putNumber("lower motor encoder", intake.getLowerMotorEncoder());
     
 
   }

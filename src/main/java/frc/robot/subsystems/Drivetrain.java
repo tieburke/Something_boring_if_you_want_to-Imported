@@ -42,7 +42,7 @@ public class Drivetrain extends SubsystemBase {
     midRight = new CANSparkMax(Constants.MR_DRIVE_PORT, MotorType.kBrushless);
 	backLeft = new CANSparkMax(Constants.BL_DRIVE_PORT, MotorType.kBrushless);
 	backRight = new CANSparkMax(Constants.BR_DRIVE_PORT, MotorType.kBrushless);
-	gearShift = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);  
+	gearShift = new DoubleSolenoid(0, PneumaticsModuleType.CTREPCM, 0, 1);  
 
     	frontLeft.restoreFactoryDefaults();
 		frontRight.restoreFactoryDefaults();

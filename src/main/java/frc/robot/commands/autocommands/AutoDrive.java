@@ -26,7 +26,7 @@ public class AutoDrive extends CommandBase {
 
     @Override
     public void execute() {
-        drivetrain.arcadeDrive(power, 0);
+        drivetrain.arcadeDrive(0, power);
     }
 
     @Override

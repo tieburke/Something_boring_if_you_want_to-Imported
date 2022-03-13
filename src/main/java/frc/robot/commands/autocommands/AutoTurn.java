@@ -25,7 +25,7 @@ public class AutoTurn extends CommandBase {
 
     @Override
     public void execute() {
-        drivetrain.arcadeDrive(0, power);
+        drivetrain.arcadeDrive(power, 0);
     }
 
     @Override

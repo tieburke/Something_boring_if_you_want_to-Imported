@@ -22,10 +22,11 @@ public final class Constants {
                             BL_DRIVE_PORT = 5,
                             BR_DRIVE_PORT = 6,
                             INTAKE_MOTOR_PORT = 7,
-                            PINK_TRANSPORT = 8,
-                            TOP_TRANSPORT = 9,
-                            SHOOTER_PORT = 10,
-                            TURRET_MOTOR = 11;
+                            LOWER_INTAKE_MOTOR_PORT = 8,
+                            PINK_TRANSPORT = 9,
+                            TOP_TRANSPORT = 10,
+                            SHOOTER_PORT = 11,
+                            TURRET_MOTOR = 12;
 
     //Servo Ports
     public static final int SHOOTER_SERVO = 0;  

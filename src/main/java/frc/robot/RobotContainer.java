@@ -15,12 +15,15 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.IntakeDown;
 import frc.robot.commands.IntakeGoSpin;
+import frc.robot.commands.IntakeUp;
 import frc.robot.commands.PixyFindBall;
 import frc.robot.commands.SetShooterVelocity;
 import frc.robot.commands.SwitchGears;
 import frc.robot.commands.TankDrive;
 import frc.robot.commands.TransportGoBrr;
+import frc.robot.commands.TransportandIntake;
 import frc.robot.commands.WhateverYouWant;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -44,7 +47,7 @@ public class RobotContainer {
   private final Joystick stick;
   private final XboxController xbox;
   private final Drivetrain drivetrain;
-  private final Shooter shooter;
+  //private final Shooter shooter; we took out shooter before first competition
   private final Climber climber;
   private final Limelight limelight;
   private final Transport transport;
@@ -58,18 +61,20 @@ public class RobotContainer {
     stick = new Joystick(0);
     xbox = new XboxController(1);
     drivetrain = new Drivetrain();
-    shooter = new Shooter();
+    //shooter = new Shooter(); we took out shooter before first competition
     climber = new Climber();
     limelight = new Limelight();
     pixy = new Pixy2Obj();
     transport = new Transport();
     intake = new Intake();
-
+    chooser = new SendableChooser<>();
+    
     // Configure the button bindings
     configureButtonBindings();
 
   //  initializeAutoChooser();
     setDefaultCommands();
+    initializeAutoChooser();  
   }
 
 
@@ -116,12 +121,16 @@ public class RobotContainer {
     //j2.whenPressed(new SwitchGears(drivetrain));
     j2.whenPressed(new InstantCommand(drivetrain::switchGears, drivetrain));
 
-    xMenu.whenPressed(new WhateverYouWant(drivetrain, pixy));
+    //xMenu.whenPressed(new WhateverYouWant(drivetrain, pixy));
+    xMenu.whenPressed(new InstantCommand(climber::orangeValve, climber));
+    xSelect.whenPressed(new InstantCommand(climber::hookValve, climber));
     xA.whenPressed(new InstantCommand(climber::climberValve, climber));
-    xB.whenHeld(new SetShooterVelocity(shooter));
+    xB.whenHeld(new TransportandIntake(transport, intake));
     xX.whenHeld(new TransportGoBrr(transport));
     xY.whenHeld(new IntakeGoSpin(intake));
 
+    xRB.whenHeld(new IntakeDown(intake));
+    xLB.whenHeld(new IntakeUp(intake));
   }
 
   public double filter(double value) {
@@ -143,8 +152,21 @@ public class RobotContainer {
 		  );
 
       chooser.addOption("DriveOutTarmac",
-      new AutoDrive(0.5, 12, drivetrain)
+      new AutoDrive(0.5, 5, drivetrain)
       );
+
+      chooser.addOption("DriveOutTarmacBackwards",
+      new AutoDrive(0.5, -9, drivetrain)
+      );
+
+      // chooser.addOption(  
+      // "BetterDriveOutTarmacBackwards",
+      // new RunCommand(() -> drivetrain.arcadeDrive(0, -.4))
+      // .withTimeout(2)
+      // .andThen(() -> drivetrain.arcadeDrive(0, 0), drivetrain)
+      // );
+
+
 
       SmartDashboard.putData(chooser);
 
