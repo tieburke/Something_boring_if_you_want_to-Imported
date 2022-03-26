@@ -6,8 +6,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.AnalogInput;
+
 
 //import com.kauailabs.navx.frc.AHRS;
 
@@ -15,6 +18,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.SPI;
 import com.revrobotics.RelativeEncoder;
+import com.kauailabs.navx.frc.AHRS;
+//import com.revrobotics.AnalogInput;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -25,13 +30,15 @@ public class Drivetrain extends SubsystemBase {
 
 	private final MotorControllerGroup right, left;
 
-	private final DoubleSolenoid gearShift;
+	public final DoubleSolenoid gearShift;
 
 	private final DifferentialDrive drive;
 
-	//private final AHRS ahrs;
+	private final AHRS ahrs;
 	private RelativeEncoder leftEncoder;
 	private RelativeEncoder rightEncoder;
+
+	private final AnalogInput distanceSensor;
 
 	double gyroOffset = 0;
 	
@@ -63,7 +70,7 @@ public class Drivetrain extends SubsystemBase {
 		
 		drive = new DifferentialDrive(left, right);
 
-		// ahrs = new AHRS(SPI.Port.kMXP);
+		ahrs = new AHRS(SPI.Port.kMXP);
 
 		resetEncoders();
 
@@ -71,6 +78,8 @@ public class Drivetrain extends SubsystemBase {
 		rightEncoder = frontRight.getEncoder();
 
 		gearShift.set(DoubleSolenoid.Value.kReverse);
+
+		distanceSensor = new AnalogInput(0);
 
   }
 
@@ -101,13 +110,13 @@ public class Drivetrain extends SubsystemBase {
 		return (getEncoderLeft() + -getEncoderRight()) / 2;
 	}
 
-	// public double getAngle() {
-		// return ahrs.getAngle() - gyroOffset;
-	// }
+	public double getAngle() {
+		return ahrs.getAngle() - gyroOffset;
+	}
 	
-	// public void resetAngle() {
-		// gyroOffset = ahrs.getAngle();
-	// }
+	public void resetAngle() {
+		gyroOffset = ahrs.getAngle();
+	}
 	public void setGearShift(boolean shift){
 		if (shift){
 		gearShift.set(DoubleSolenoid.Value.kForward);
@@ -121,10 +130,20 @@ public class Drivetrain extends SubsystemBase {
 		gearShift.toggle();
 	}
 
+	public int getDistance(){
+		return distanceSensor.getAverageValue();
+	}
+
 //This is a test ignore this
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+	SmartDashboard.putNumber("Gyro Degrees", getAngle());
+	SmartDashboard.putNumber("Gyro Roll Degrees", ahrs.getRoll());
+	SmartDashboard.putNumber("Drivetrain Encoder Average", getEncoderAverage());
+	SmartDashboard.putNumber("distance", getDistance());
+	SmartDashboard.putNumber("rightEncoder", getEncoderRight());
+	SmartDashboard.putNumber("leftEncoder", getEncoderLeft());
   }
 }

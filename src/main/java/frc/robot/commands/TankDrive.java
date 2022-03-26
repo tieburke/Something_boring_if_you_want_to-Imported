@@ -7,6 +7,7 @@ package frc.robot.commands;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
@@ -46,8 +47,18 @@ public class TankDrive extends CommandBase {
     double speed = forward.getAsDouble() * direction;
     double rotate = rotation.getAsDouble();
 
+    SmartDashboard.putNumber("drivetrain speed", speed);
+    SmartDashboard.putNumber("drivetrain rotate", rotate);
 
-    drivetrain.arcadeDrive(rotate, speed, false);
+    if(drivetrain.getDistance() < 1000){
+        drivetrain.arcadeDrive(rotate, speed, false);
+        //SmartDashboard.putString("STATUS", "OK");
+        
+    }
+    else{
+      drivetrain.arcadeDrive(rotate, -.2*Math.abs(speed), false);
+      //SmartDashboard.putString("STATUS", "STOP");
+    }
 
     if (shift1){
       drivetrain.setGearShift(true);

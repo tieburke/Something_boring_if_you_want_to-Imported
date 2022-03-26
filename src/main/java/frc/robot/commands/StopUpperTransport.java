@@ -5,19 +5,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Transport;
 
-public class IntakeGoSpin extends CommandBase {
+public class StopUpperTransport extends CommandBase {
 
-private Intake intake;
-
-
-  /** Creates a new SetShooterVelocity. */
-  public IntakeGoSpin(Intake intake) {
-
-    this.intake = intake;
-    addRequirements(intake);
+  private final Transport transport;
+  /** Creates a new RunPinkTransport. */
+  public StopUpperTransport(Transport transport) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.transport = transport;
+    addRequirements(transport);
   }
 
   // Called when the command is initially scheduled.
@@ -27,18 +24,18 @@ private Intake intake;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setIntakeMotor(1);
+    //transport.setTopTransport(0);  uncomment if you want to run top transport using power
+    transport.setTopTransportRPM(0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.setIntakeMotor(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

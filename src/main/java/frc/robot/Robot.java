@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+
 //this is a change
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -12,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Intake;
 import frc.robot.util.Limelight;
+import edu.wpi.first.wpilibj.SPI;
 import frc.robot.util.Pixy2Obj;
 //this is also a change
 /**
@@ -27,6 +30,7 @@ public class Robot extends TimedRobot {
   private Pixy2Obj pixy;
   private Limelight limelight;
   private Intake intake;
+  private AHRS ahrs;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -40,6 +44,7 @@ public class Robot extends TimedRobot {
     limelight = new Limelight();
     m_robotContainer = new RobotContainer();
     intake = new Intake();
+    ahrs = new AHRS(SPI.Port.kMXP);
   }
 
   /**
@@ -71,11 +76,16 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
+    CommandScheduler.getInstance().onCommandInitialize(
+      (command) -> SmartDashboard.putString(command.getName(), "initialized"));
+
+
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+      m_autonomousCommand.schedule(false);
     }
-  }
+
+      }
 
   /** This function is called periodically during autonomous. */
   @Override
